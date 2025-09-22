@@ -1,0 +1,92 @@
+Great — let’s build your **PesaPlan MVP roadmap** around Django REST Framework 🚀. I’ll keep it **lean but functional**, so you can launch fast and expand later.
+
+---
+
+# 🗺️ PesaPlan MVP Roadmap
+
+## **Phase 1: Core Backend (Django + DRF)**
+
+### 1. **Models**
+
+* **User** (extend Django user model)
+
+  * Name, Email, Phone (with verification), Password, User Type (individual / group).
+* **Wallet**
+
+  * Balance, Linked phone number (for M-Pesa), Transaction history.
+* **StandingOrder**
+
+  * User → Wallet
+  * Amount, Frequency (daily/weekly/monthly), Next execution date, Status.
+* **Transaction**
+
+  * Order ID, Amount, Payment status (pending, success, failed), Timestamp.
+
+---
+
+### 2. **API Endpoints** (DRF)
+
+* `POST /auth/register/` → Create user.
+* `POST /auth/login/` → JWT login.
+* `POST /wallet/topup/` → Add money (via M-Pesa STK push).
+* `POST /standing-order/create/` → Set up recurring payment.
+* `GET /standing-order/` → List user’s standing orders.
+* `PATCH /standing-order/{id}/` → Pause, edit, or cancel order.
+* `GET /transactions/` → View transaction history.
+
+---
+
+### 3. **Background Jobs** (Celery + Redis)
+
+* **Standing order scheduler** → Executes recurring payments at set times.
+* **Retry failed payments** → If M-Pesa API is down, retry after X minutes.
+* **Notifications** → Send SMS/email/push after successful/failed payment.
+
+---
+
+## **Phase 2: Mobile App (React Native)**
+
+### 1. **Core Features**
+
+* **Onboarding** → Sign up/login with phone verification.
+* **Wallet view** → Check balance, top up via M-Pesa.
+* **Set Standing Order** → Choose amount, frequency, and recipient.
+* **Track Payments** → Transaction history & next scheduled payment.
+* **Notifications** → “Ksh 2,000 sent to fundraiser XYZ.”
+
+---
+
+### 2. **UX Priorities**
+
+* **Simple flow:** e.g., “I want to give 20,000 over 5 weeks → app auto-calculates 4,000/week.”
+* **Local design:** Colors, Swahili/English toggle, mobile money UX patterns.
+
+---
+
+## **Phase 3: Admin Dashboard (React Web)**
+
+* Manage users, orders, and transactions.
+* View analytics: top causes, active users, total processed amounts.
+* Flag suspicious/fraudulent activity.
+
+---
+
+## **Phase 4: Nice-to-Haves (Post-MVP Expansion)**
+
+* **Group standing orders** → e.g., chama members contribute automatically.
+* **Smart reminders** → “You missed a payment. Retry?”
+* **Analytics for users** → “You’ve contributed 50k over 6 months.”
+* **Savings goals** → Automate saving for school fees, rent, etc.
+* **API for churches/NGOs** → Accept recurring giving.
+
+---
+
+⚡ **Launch Strategy:**
+
+1. Start with **fundraisers & recurring giving** (people instantly relate).
+2. Expand to **rent, school fees, chama contributions**.
+3. Then move into **full financial planning** (budgets, savings, investments).
+
+---
+
+👉🏽 Do you want me to **sketch out the DRF models (actual Django code)** for *Users, Wallet, Standing Orders, and Transactions* so you can start coding immediately?

@@ -1,0 +1,106 @@
+Solid choice 💯 — **Django REST Framework (DRF)** will give PesaPlan the stability and compliance edge you’ll need in fintech.
+
+Here’s a clear roadmap for how you can structure **PesaPlan on DRF**:
+
+---
+
+## ⚙️ Architecture Overview
+
+### **1. Backend (Django + DRF)**
+
+* **Core Modules**
+
+  * **Auth & Users** → phone number-based signup (later OAuth if needed).
+  * **Standing Orders** → schedules (amount, recipient, frequency, status).
+  * **Payments** → M-Pesa STK Push integration (via Daraja API).
+  * **Wallet (optional for v2)** → users can pre-load balance.
+  * **Notifications** → SMS, email, push.
+  * **Audit Logs** → every payment attempt is recorded.
+
+* **Scheduling**
+
+  * Use **Celery** (with Redis or RabbitMQ) for job queues.
+  * Celery Beat for recurring tasks → triggers payment jobs at the right time.
+
+---
+
+### **2. Frontend (React Native App)**
+
+* Key Screens:
+
+  * **Onboarding/Login** (phone number, OTP).
+  * **Dashboard** (next payments, wallet balance).
+  * **Create Standing Order** (amount, recipient, schedule).
+  * **Payment Confirmation** (STK Push or wallet deduction).
+  * **History/Receipts**.
+
+---
+
+### **3. Database (PostgreSQL)**
+
+* Tables you’ll likely need:
+
+  * `users` → phone, PIN (hashed), auth tokens.
+  * `standing_orders` → user\_id, recipient, amount, frequency, next\_run.
+  * `transactions` → linked to standing\_order, amount, status, mpesa\_ref.
+  * `wallet` (if enabled) → balance, deposits, withdrawals.
+  * `audit_logs` → full traceability.
+
+---
+
+### **4. Payments (Safaricom Daraja API)**
+
+* Start with **STK Push**:
+
+  * At scheduled time → Celery job → STK Push → user approves on phone.
+  * Update transaction status via Daraja callback.
+* Later expand:
+
+  * **C2B** → for deposits into wallet.
+  * **B2C** → payouts if you support group funds.
+  * **Direct Debit** (if Safaricom grants access).
+
+---
+
+### **5. Notifications**
+
+* **SMS** → Africa’s Talking API (cheaper and local).
+* **Push** → Firebase Cloud Messaging (for app).
+* **Email** → SendGrid / AWS SES (for receipts).
+
+---
+
+## 🚀 MVP Roadmap (3–4 Months)
+
+### **Phase 1 (Month 1–2): Foundations**
+
+* DRF backend (users, standing orders, transactions).
+* PostgreSQL setup.
+* Basic React Native app (login + dashboard + create order).
+
+### **Phase 2 (Month 2–3): Payments**
+
+* Integrate Daraja STK Push.
+* Celery + Redis for scheduling standing orders.
+* Transaction history + audit logs.
+
+### **Phase 3 (Month 3–4): User Experience**
+
+* Notifications (SMS + push).
+* Receipts (PDF or email).
+* Basic wallet (optional).
+
+---
+
+## 🔐 Security & Compliance
+
+* Use **HTTPS everywhere**.
+* Store **PINs/credentials encrypted** (AES-256 / KMS).
+* Strict **audit logs** (important for trust + licensing later).
+* Future-proof for **CBK regulatory compliance** if you scale.
+
+---
+
+👉🏽 Next step: I can help you **design the database schema for PesaPlan (Django models)** so you’ll have a concrete starting point for development.
+
+Do you want me to draft the **models + relationships** for Users, Standing Orders, and Transactions?

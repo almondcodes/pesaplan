@@ -1,0 +1,119 @@
+Got it ✅ — let’s make this practical. I’ll give you a **clear implementation plan + tasks/stories**, then recommend a solid open-source project management tool you can use to track everything.
+
+---
+
+# 🛠️ **PesaPlan Implementation Plan**
+
+### **Phase 1 – Backend Core (Django + DRF)**
+
+**User Stories / Tasks**
+
+1. As a user, I can register with phone/email → `User` model + registration API.
+2. As a user, I can log in securely → JWT auth setup.
+3. As a user, I get a wallet when I register → `Wallet` model + signal.
+4. As a user, I can check my wallet balance → `/wallet/` endpoint.
+5. As a user, I can set a standing order → `StandingOrder` model + API.
+6. As a user, I can view my transactions → `Transaction` model + API.
+
+---
+
+### **Phase 2 – M-Pesa Integration**
+
+**User Stories / Tasks**
+
+1. As a user, I can top up via M-Pesa → STK push endpoint.
+2. As a user, I get confirmation when payment succeeds/fails → callback handler.
+3. As a user, I can see transaction status updated in real-time → update transaction model.
+
+---
+
+### **Phase 3 – Mobile App (React Native)**
+
+**User Stories / Tasks**
+
+1. As a user, I can register/login with my phone → Auth screens.
+2. As a user, I can see my wallet balance → Wallet screen.
+3. As a user, I can create a standing order → Form UI + API integration.
+4. As a user, I can track all my payments → Transactions screen.
+5. As a user, I get notified of success/failure → push notification setup.
+
+---
+
+### **Phase 4 – Admin Dashboard (React Web)**
+
+**User Stories / Tasks**
+
+1. As an admin, I can view all users → Admin user list.
+2. As an admin, I can monitor standing orders → Admin orders list.
+3. As an admin, I can see transactions and statuses → Transaction dashboard.
+4. As an admin, I can detect failed/suspicious activity → Alerts system.
+
+---
+
+### **Phase 5 – Future Expansion (Post-MVP)**
+
+* Group standing orders (chamas, fundraisers).
+* Savings goals (school fees, rent).
+* API for churches/NGOs to accept recurring donations.
+* Analytics for users (spending insights).
+
+---
+
+# 📌 Task Breakdown (Agile-style Stories)
+
+* **Epic 1: Authentication & User Management**
+
+  * Task: Implement custom `User` model.
+  * Task: Register endpoint.
+  * Task: Login with JWT.
+
+* **Epic 2: Wallet & Transactions**
+
+  * Task: Implement `Wallet` model & signal.
+  * Task: Balance check API.
+  * Task: Transaction history API.
+
+* **Epic 3: Standing Orders**
+
+  * Task: Implement `StandingOrder` model.
+  * Task: Create/Edit/Delete standing order API.
+  * Task: Execute standing order manually API.
+
+* **Epic 4: M-Pesa Integration**
+
+  * Task: Add `mpesa_service.py` for STK push.
+  * Task: Implement STK push trigger in standing orders.
+  * Task: Implement callback endpoint.
+  * Task: Update transaction status from callback.
+
+* **Epic 5: Mobile Frontend**
+
+  * Task: Onboarding flow (register/login).
+  * Task: Wallet screen.
+  * Task: Standing order creation form.
+  * Task: Transactions screen.
+
+---
+
+# 🛠️ Recommended Open Source Project Management Tool
+
+### ✅ **OpenProject**
+
+* Open-source, self-hosted.
+* Agile/Scrum boards, tasks, epics, timelines.
+* Great for small teams/startups.
+* [openproject.org](https://www.openproject.org)
+
+### Alternatives:
+
+* **Taiga** → Lightweight, Kanban + Scrum (beautiful UI).
+* **Redmine** → Older, but reliable.
+* **GitHub Projects** → If you’re already using GitHub, simple & free.
+
+---
+
+👉 I’d recommend **Taiga** if you want **lightweight & simple**, and **OpenProject** if you want **enterprise features** like timelines & reporting.
+
+---
+
+Would you like me to **map these tasks into a sample Taiga board (epics + stories + tasks)** so you see exactly how they’d look in practice?

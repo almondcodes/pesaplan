@@ -1,0 +1,108 @@
+Perfect 👌 Let’s lay down the **core Django REST Framework models** for **PesaPlan**. This will give you a strong backend foundation.
+
+---
+
+# 📝 Django Models for PesaPlan
+
+```python
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+from django.utils import timezone
+import uuid
+
+
+# --------------------------
+# 1. Custom User
+# --------------------------
+class User(AbstractUser):
+    phone_number = models.CharField(max_length=15, unique=True)
+    email = models.EmailField(unique=True, null=True, blank=True)
+    USER_TYPE_CHOICES = [
+        ("individual", "Individual"),
+        ("group", "Group"),
+    ]
+    user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES, default="individual")
+
+    def __str__(self):
+        return f"{self.username} - {self.phone_number}"
+
+
+# --------------------------
+# 2. Wallet
+# --------------------------
+class Wallet(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="wallet")
+    balance = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    phone_number = models.CharField(max_length=15)  # M-Pesa linked phone
+
+    def __str__(self):
+        return f"{self.user.username}'s Wallet - {self.balance}"
+
+
+# --------------------------
+# 3. Standing Order
+# --------------------------
+class StandingOrder(models.Model):
+    STATUS_CHOICES = [
+        ("active", "Active"),
+        ("paused", "Paused"),
+        ("cancelled", "Cancelled"),
+    ]
+    FREQUENCY_CHOICES = [
+        ("daily", "Daily"),
+        ("weekly", "Weekly"),
+        ("monthly", "Monthly"),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="standing_orders")
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    frequency = models.CharField(max_length=20, choices=FREQUENCY_CHOICES)
+    next_execution = models.DateTimeField(default=timezone.now)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="active")
+    recipient_name = models.CharField(max_length=255, null=True, blank=True)
+    recipient_phone = models.CharField(max_length=15, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.amount} {self.frequency} ({self.status})"
+
+
+# --------------------------
+# 4. Transaction
+# --------------------------
+class Transaction(models.Model):
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("success", "Success"),
+        ("failed", "Failed"),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    standing_order = models.ForeignKey(StandingOrder, on_delete=models.SET_NULL, null=True, blank=True, related_name="transactions")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="transactions")
+    amount = models.DecimalField(max_digits=12, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="pending")
+    mpesa_receipt = models.CharField(max_length=50, null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.amount} [{self.status}]"
+```
+
+---
+
+# 🔑 Key Features in These Models
+
+1. **Custom User model** → supports phone-based login.
+2. **Wallet** → each user has one, balance tracked internally.
+3. **Standing Orders** → amount, frequency (daily/weekly/monthly), next execution date.
+4. **Transactions** → linked to standing orders, track success/failure, store M-Pesa receipt.
+
+---
+
+👉 Next Step: I can also sketch the **DRF Serializers + Views (API endpoints)** for these models, so you can start wiring up the API quickly.
+
+Would you like me to do that?

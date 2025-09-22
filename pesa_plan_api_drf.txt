@@ -1,0 +1,162 @@
+Awesome 🚀 Let’s wire up **Django REST Framework serializers + views** for your PesaPlan models. This will expose your **User, Wallet, Standing Orders, and Transactions** as APIs.
+
+---
+
+# 📝 Serializers
+
+```python
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+from .models import Wallet, StandingOrder, Transaction
+
+User = get_user_model()
+
+
+# --------------------------
+# 1. User Serializer
+# --------------------------
+class UserSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "phone_number", "email", "user_type", "password"]
+
+    def create(self, validated_data):
+        password = validated_data.pop("password")
+        user = User(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user
+
+
+# --------------------------
+# 2. Wallet Serializer
+# --------------------------
+class WalletSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Wallet
+        fields = ["id", "balance", "phone_number"]
+
+
+# --------------------------
+# 3. Standing Order Serializer
+# --------------------------
+class StandingOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StandingOrder
+        fields = [
+            "id", "amount", "frequency", "next_execution", "status",
+            "recipient_name", "recipient_phone", "created_at", "updated_at"
+        ]
+
+
+# --------------------------
+# 4. Transaction Serializer
+# --------------------------
+class TransactionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transaction
+        fields = ["id", "amount", "status", "mpesa_receipt", "timestamp"]
+```
+
+---
+
+# 📝 Views (API Endpoints)
+
+```python
+from rest_framework import generics, permissions, viewsets
+from django.contrib.auth import get_user_model
+from .models import Wallet, StandingOrder, Transaction
+from .serializers import (
+    UserSerializer,
+    WalletSerializer,
+    StandingOrderSerializer,
+    TransactionSerializer,
+)
+
+User = get_user_model()
+
+
+# --------------------------
+# 1. User Registration
+# --------------------------
+class UserRegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+
+
+# --------------------------
+# 2. Wallet View
+# --------------------------
+class WalletView(generics.RetrieveAPIView):
+    serializer_class = WalletSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user.wallet
+
+
+# --------------------------
+# 3. Standing Orders
+# --------------------------
+class StandingOrderViewSet(viewsets.ModelViewSet):
+    serializer_class = StandingOrderSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return StandingOrder.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+# --------------------------
+# 4. Transactions
+# --------------------------
+class TransactionViewSet(viewsets.ReadOnlyModelViewSet):
+    serializer_class = TransactionSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Transaction.objects.filter(user=self.request.user)
+```
+
+---
+
+# 📝 URLs
+
+```python
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import UserRegisterView, WalletView, StandingOrderViewSet, TransactionViewSet
+
+router = DefaultRouter()
+router.register(r"standing-orders", StandingOrderViewSet, basename="standing-order")
+router.register(r"transactions", TransactionViewSet, basename="transaction")
+
+urlpatterns = [
+    path("auth/register/", UserRegisterView.as_view(), name="register"),
+    path("wallet/", WalletView.as_view(), name="wallet"),
+    path("", include(router.urls)),
+]
+```
+
+---
+
+# ✅ What You Get from This Setup
+
+* **`POST /auth/register/`** → User registration.
+* **`GET /wallet/`** → See user’s wallet balance.
+* **`POST /standing-orders/`** → Create standing order.
+* **`GET /standing-orders/`** → List user’s standing orders.
+* **`PATCH /standing-orders/{id}/`** → Edit standing order.
+* **`DELETE /standing-orders/{id}/`** → Cancel order.
+* **`GET /transactions/`** → See all transactions.
+
+---
+
+👉 Next Step: I can help you **integrate M-Pesa Daraja API** into these endpoints, so that creating a standing order can actually trigger real payments.
+
+Do you want me to sketch that integration flow next?
