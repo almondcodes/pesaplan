@@ -89,8 +89,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       setIsLoading(true);
       
+      console.log('Attempting login with:', { phoneNumber });
+      
       // Make API call to login
-      const response = await fetch('http://localhost:8000/api/v1/auth/login/', {
+      const response = await fetch('http://192.168.0.103:8000/api/v1/auth/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,16 +103,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }),
       });
 
+      console.log('Login response status:', response.status);
+
       if (!response.ok) {
         const errorData = await response.json();
+        console.log('Login error data:', errorData);
         throw new Error(errorData.detail || 'Login failed');
       }
 
       const data = await response.json();
       
-      // Store tokens securely
-      await SecureStore.setItemAsync('accessToken', data.access);
-      await SecureStore.setItemAsync('refreshToken', data.refresh);
+      // Store tokens securely (ensure they are strings)
+      await SecureStore.setItemAsync('accessToken', String(data.tokens.access));
+      await SecureStore.setItemAsync('refreshToken', String(data.tokens.refresh));
       
       // Store user data
       setUser(data.user);
@@ -129,7 +134,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setIsLoading(true);
       
       // Make API call to register
-      const response = await fetch('http://localhost:8000/api/v1/auth/register/', {
+      const response = await fetch('http://192.168.0.103:8000/api/v1/auth/register/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,9 +156,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       const data = await response.json();
       
-      // Store tokens securely
-      await SecureStore.setItemAsync('accessToken', data.access);
-      await SecureStore.setItemAsync('refreshToken', data.refresh);
+      // Store tokens securely (ensure they are strings)
+      await SecureStore.setItemAsync('accessToken', String(data.tokens.access));
+      await SecureStore.setItemAsync('refreshToken', String(data.tokens.refresh));
       
       // Store user data
       setUser(data.user);
