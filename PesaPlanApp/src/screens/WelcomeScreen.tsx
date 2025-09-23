@@ -3,7 +3,7 @@ import {
   View,
   StyleSheet,
   Dimensions,
-  Image,
+  ScrollView,
 } from 'react-native';
 import {
   Text,
@@ -22,7 +22,11 @@ export default function WelcomeScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
+      <ScrollView 
+        style={styles.scrollView}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator={false}
+      >
         {/* Logo and Branding */}
         <View style={styles.logoContainer}>
           <Surface style={[styles.logoSurface, shadows.lg]}>
@@ -108,7 +112,7 @@ export default function WelcomeScreen() {
             By continuing, you agree to our Terms of Service and Privacy Policy
           </Text>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -118,10 +122,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.background,
   },
-  content: {
+  scrollView: {
     flex: 1,
+  },
+  content: {
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.xl,
+    minHeight: '100%',
   },
   logoContainer: {
     alignItems: 'center',
