@@ -1,10 +1,10 @@
-# PesaPlan - Automated Recurring Payments Platform
+# PesaPlan
 
-PesaPlan is a comprehensive fintech platform that enables users to set up automated recurring payments in Kenya using M-Pesa integration. Built with Django REST Framework, it provides a robust backend for managing standing orders, wallet operations, and payment processing.
+Automated recurring payments for Kenya with M-Pesa. Django REST backend for standing orders, wallets, and payment processing; React Native mobile app planned.
 
-## 🚀 Features
+## Features
 
-### Core Features
+### Core
 - **User Management**: Phone-based authentication with JWT tokens
 - **Wallet System**: Digital wallet with balance tracking and transaction history
 - **Standing Orders**: Automated recurring payments (daily, weekly, monthly, etc.)
@@ -13,16 +13,16 @@ PesaPlan is a comprehensive fintech platform that enables users to set up automa
 - **Notification System**: SMS, email, and push notifications
 - **Security**: PIN-based authentication, rate limiting, and audit trails
 
-### Advanced Features
+### Advanced
 - **Background Jobs**: Celery-based task processing for payment automation
 - **Retry Logic**: Automatic retry for failed payments
 - **Compliance**: Audit logs and transaction traceability
 - **Scalability**: Redis caching and PostgreSQL database
 - **Monitoring**: Health checks and comprehensive logging
 
-## 🏗️ Architecture
+## Stack
 
-### Backend Stack
+### Backend
 - **Django 4.2** - Web framework
 - **Django REST Framework** - API development
 - **PostgreSQL** - Primary database
@@ -30,11 +30,11 @@ PesaPlan is a comprehensive fintech platform that enables users to set up automa
 - **Celery** - Background task processing
 - **M-Pesa Daraja API** - Payment processing
 
-### Frontend (Planned)
+### Frontend (planned)
 - **React Native** - Mobile application
 - **React.js** - Admin dashboard
 
-## 📁 Project Structure
+## Project structure
 
 ```
 pesaplan/
@@ -58,7 +58,7 @@ pesaplan/
 └── docs/                       # Documentation
 ```
 
-## 🚀 Quick Start
+## Quick start
 
 ### Prerequisites
 - Python 3.11+
@@ -66,11 +66,11 @@ pesaplan/
 - Redis 7+
 - Docker & Docker Compose (optional)
 
-### Development Setup
+### Development setup
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/almondcodes/pesaplan.git
    cd pesaplan
    ```
 
@@ -117,7 +117,7 @@ pesaplan/
    docker-compose exec web python manage.py create_superuser
    ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -153,7 +153,7 @@ AFRICASTALKING_USERNAME=your-username
 AFRICASTALKING_API_KEY=your-api-key
 ```
 
-## 📚 API Documentation
+## API documentation
 
 ### Authentication Endpoints
 - `POST /api/v1/auth/register/` - User registration
@@ -176,7 +176,7 @@ AFRICASTALKING_API_KEY=your-api-key
 - `DELETE /api/v1/standing-orders/{id}/` - Cancel standing order
 - `POST /api/v1/standing-orders/{id}/execute/` - Execute standing order
 
-## 🔒 Security Features
+## Security
 
 - **JWT Authentication**: Secure token-based authentication
 - **PIN Protection**: 4-6 digit PIN for sensitive operations
@@ -185,7 +185,7 @@ AFRICASTALKING_API_KEY=your-api-key
 - **Data Encryption**: Sensitive data encryption at rest
 - **HTTPS Enforcement**: SSL/TLS in production
 
-## 🧪 Testing
+## Testing
 
 ```bash
 # Run tests
@@ -197,7 +197,7 @@ coverage report
 coverage html
 ```
 
-## 🚀 Deployment
+## Deployment
 
 ### Production Deployment
 
@@ -227,7 +227,7 @@ coverage html
 - **Development**: `pesaplan.settings.development`
 - **Production**: `pesaplan.settings.production`
 
-## 📊 Monitoring
+## Monitoring
 
 ### Health Checks
 - `GET /health/` - Comprehensive health check endpoint
@@ -237,7 +237,7 @@ coverage html
 - Structured logging with JSON format
 - Log levels: DEBUG, INFO, WARNING, ERROR, CRITICAL
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -245,18 +245,18 @@ coverage html
 4. Add tests
 5. Submit a pull request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🆘 Support
+## Support
 
 For support and questions:
 - Create an issue on GitHub
 - Check the documentation
 - Review the API endpoints
 
-## 🗺️ Roadmap
+## Roadmap
 
 ### Phase 1: Backend Foundation ✅
 - [x] Django project setup
